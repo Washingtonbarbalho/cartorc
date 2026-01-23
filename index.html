@@ -50,7 +50,7 @@
             align-items: center;
         }
 
-        /* Área do Vendedor (Esquerda - Com Destaque) */
+        /* Área do Vendedor (Esquerda) */
         .seller-info {
             text-align: left;
             color: #000;
@@ -86,7 +86,7 @@
             color: #000;
         }
 
-        /* Área do Logo (Direita - Simplificado) */
+        /* Área do Logo (Direita) */
         .logo-div {
             text-align: right;
         }
@@ -158,31 +158,30 @@
             display: inline-block;
         }
 
-        /* --- Configurações de Impressão (ALTURA AJUSTADA PARA 292mm) --- */
+        /* --- Configurações de Impressão (CORREÇÃO DEFINITIVA) --- */
         @media print {
             @page {
                 size: A4;
-                margin: 0;
+                margin: 0; /* Zera margens da impressora */
             }
             
             body {
                 margin: 0 !important;
                 padding: 0 !important;
                 background: white;
-                display: flex !important;
-                justify-content: center;
-                align-items: center;
-                height: 100vh;
+                display: block !important; /* REMOVIDO: flex/center que causava o problema */
             }
 
             .no-print { display: none !important; }
 
             .print-container {
-                /* Largura mantida em 202mm para segurança lateral */
+                /* Dimensões Fixas */
                 width: 202mm; 
-                
-                /* Altura ajustada conforme pedido */
                 height: 292mm; 
+                
+                /* POSICIONAMENTO MANUAL ESTRITO */
+                /* 2.5mm Topo | Auto (Centro) Direita | 0 Baixo | Auto (Centro) Esquerda */
+                margin: 2.5mm auto 0 auto !important; 
                 
                 display: grid !important;
                 grid-template-columns: repeat(3, 1fr);
@@ -190,14 +189,15 @@
                 gap: 0;
                 box-sizing: border-box;
                 overflow: hidden;
-                margin: 0; 
             }
             
+            /* Bordas da Grade */
             .card {
                 border-right: 1px solid #000;
                 border-bottom: 1px solid #000;
             }
             
+            /* Fecha a grade na direita e embaixo */
             .print-container .card:nth-child(3n) { border-right: 1px solid #000; } 
             .print-container .card:nth-child(n+7) { border-bottom: 1px solid #000; } 
         }
@@ -219,9 +219,8 @@
         .btn-zenir:hover { background-color: #003a7a; }
 
         .preview-area {
-            /* Tamanho exato da impressão para preview fiel */
             width: 202mm;
-            height: 292mm; /* Ajustado aqui também */
+            height: 292mm;
             background: white;
             margin: 30px auto;
             display: grid;
@@ -230,7 +229,7 @@
             gap: 0;
             box-shadow: 0 0 20px rgba(0,0,0,0.15);
             border: 1px dashed #ccc;
-            outline: 2.5mm solid white; /* Outline ajustado visualmente */
+            outline: 2.5mm solid white; /* Simula a margem de impressão */
             outline-offset: 1px;
         }
 
