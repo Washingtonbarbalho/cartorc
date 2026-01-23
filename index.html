@@ -31,7 +31,6 @@
             box-sizing: border-box;
             justify-content: space-between;
             background: white;
-            /* Margens negativas para colar as bordas */
             margin-right: -1px; 
             margin-bottom: -1px;
             position: relative;
@@ -48,30 +47,15 @@
         .logo-row {
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
+            align-items: center; /* Centraliza verticalmente o logo com o nome */
         }
 
-        .logo-brand {
-            font-weight: 900;
-            font-style: italic;
-            color: var(--zenir-blue);
-            font-size: 1.8rem;
-            line-height: 0.9;
-        }
-
-        .logo-subtext {
-            font-size: 0.65rem;
-            color: var(--zenir-red);
-            font-weight: 700;
-            text-transform: uppercase;
-            margin-top: 2px;
-        }
-
+        /* Área do Vendedor (Agora na Esquerda) */
         .seller-info {
-            text-align: right;
+            text-align: left;
             color: #000;
-            max-width: 65%;
-            line-height: 1.1;
+            max-width: 75%; /* Mais espaço para o nome */
+            line-height: 1;
         }
 
         .label-vendedor {
@@ -80,10 +64,11 @@
             color: #555;
             text-transform: uppercase;
             display: block;
+            margin-bottom: 1px;
         }
 
         .vendedor-nome {
-            font-size: 0.9rem;
+            font-size: 1.3rem; /* Bem maior para destaque */
             font-weight: 900;
             color: var(--zenir-blue);
             display: block;
@@ -92,14 +77,30 @@
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
+            line-height: 0.9;
         }
 
         .vendedor-tel {
-            font-size: 0.8rem;
+            font-size: 0.85rem;
             font-weight: 700;
             color: #000;
         }
 
+        /* Área do Logo (Agora na Direita) */
+        .logo-div {
+            text-align: right;
+        }
+
+        .logo-brand {
+            font-weight: 900;
+            font-style: italic;
+            color: var(--zenir-blue);
+            font-size: 1.9rem; /* Logo Zenir limpo */
+            line-height: 0.9;
+            letter-spacing: -1px;
+        }
+
+        /* Campos do Formulário */
         .field-container {
             display: flex;
             flex-direction: column;
@@ -157,48 +158,41 @@
             display: inline-block;
         }
 
-        /* --- Configurações de Impressão (CORRIGIDO) --- */
+        /* --- Configurações de Impressão (Mantendo o que funcionou) --- */
         @media print {
             @page {
                 size: A4;
-                margin: 0; /* Remove margens da impressora */
+                margin: 0;
             }
             
             body {
                 margin: 0 !important;
                 padding: 0 !important;
                 background: white;
-                display: block !important; /* Desativa o flex do tailwind que centraliza */
+                display: block !important;
             }
 
             .no-print { display: none !important; }
 
             .print-container {
-                /* Largura segura para não cortar laterais (A4 = 210mm) */
                 width: 202mm; 
-                /* Altura máxima segura (A4 = 297mm) */
                 height: 295mm; 
-                
-                /* POSICIONAMENTO ESTRITO NO TOPO */
-                margin: 0 auto !important; /* Centraliza horizontal, 0 vertical */
+                margin: 0 auto !important;
                 position: static !important;
                 transform: none !important;
-                
                 display: grid !important;
                 grid-template-columns: repeat(3, 1fr);
                 grid-template-rows: repeat(3, 1fr);
                 gap: 0;
                 box-sizing: border-box;
-                overflow: hidden; /* Garante que não gere pag 2 */
+                overflow: hidden;
             }
             
-            /* Garante bordas nas extremidades */
             .card {
                 border-right: 1px solid #000;
                 border-bottom: 1px solid #000;
             }
             
-            /* Ajuste fino de bordas para a grade */
             .print-container .card:nth-child(3n) { border-right: 1px solid #000; } 
             .print-container .card:nth-child(n+7) { border-bottom: 1px solid #000; } 
         }
@@ -306,14 +300,16 @@
                 <div class="card">
                     <div class="header-section">
                         <div class="logo-row">
-                            <div>
-                                <div class="logo-brand">Zenir</div>
-                                <div class="logo-subtext">Móveis e Eletros</div>
-                            </div>
+                            <!-- Lado Esquerdo: Vendedor (Destaque) -->
                             <div class="seller-info">
                                 <span class="label-vendedor">Vendedor</span>
                                 <span class="vendedor-nome">${nome}</span>
                                 <span class="vendedor-tel">${tel || '(____) _____-_____'}</span>
+                            </div>
+                            
+                            <!-- Lado Direito: Logo Zenir Simplificado -->
+                            <div class="logo-div">
+                                <div class="logo-brand">Zenir</div>
                             </div>
                         </div>
                     </div>
