@@ -47,14 +47,14 @@
         .logo-row {
             display: flex;
             justify-content: space-between;
-            align-items: center; /* Centraliza verticalmente o logo com o nome */
+            align-items: center;
         }
 
-        /* Área do Vendedor (Agora na Esquerda) */
+        /* Área do Vendedor (Esquerda - Com Destaque) */
         .seller-info {
             text-align: left;
             color: #000;
-            max-width: 75%; /* Mais espaço para o nome */
+            max-width: 75%;
             line-height: 1;
         }
 
@@ -68,7 +68,7 @@
         }
 
         .vendedor-nome {
-            font-size: 1.3rem; /* Bem maior para destaque */
+            font-size: 1.3rem;
             font-weight: 900;
             color: var(--zenir-blue);
             display: block;
@@ -86,7 +86,7 @@
             color: #000;
         }
 
-        /* Área do Logo (Agora na Direita) */
+        /* Área do Logo (Direita - Simplificado) */
         .logo-div {
             text-align: right;
         }
@@ -95,12 +95,12 @@
             font-weight: 900;
             font-style: italic;
             color: var(--zenir-blue);
-            font-size: 1.9rem; /* Logo Zenir limpo */
+            font-size: 1.9rem;
             line-height: 0.9;
             letter-spacing: -1px;
         }
 
-        /* Campos do Formulário */
+        /* Campos */
         .field-container {
             display: flex;
             flex-direction: column;
@@ -158,34 +158,42 @@
             display: inline-block;
         }
 
-        /* --- Configurações de Impressão (Mantendo o que funcionou) --- */
+        /* --- Configurações de Impressão (SIMETRIA APLICADA) --- */
         @media print {
             @page {
                 size: A4;
-                margin: 0;
+                margin: 0; /* Controle total via CSS */
             }
             
             body {
                 margin: 0 !important;
                 padding: 0 !important;
                 background: white;
-                display: block !important;
+                /* Centraliza o bloco na folha verticalmente e horizontalmente */
+                display: flex !important;
+                justify-content: center;
+                align-items: center;
+                height: 100vh; /* Ocupa a altura total da folha */
             }
 
             .no-print { display: none !important; }
 
             .print-container {
+                /* Largura: 210mm (A4) - 8mm (margens laterais totais) = 202mm */
                 width: 202mm; 
-                height: 295mm; 
-                margin: 0 auto !important;
-                position: static !important;
-                transform: none !important;
+                
+                /* Altura: 297mm (A4) - 8mm (margens verticais totais) = 289mm */
+                height: 289mm; 
+                
                 display: grid !important;
                 grid-template-columns: repeat(3, 1fr);
                 grid-template-rows: repeat(3, 1fr);
                 gap: 0;
                 box-sizing: border-box;
                 overflow: hidden;
+                
+                /* Garante que não haja margins extras empurrando */
+                margin: 0; 
             }
             
             .card {
@@ -214,8 +222,9 @@
         .btn-zenir:hover { background-color: #003a7a; }
 
         .preview-area {
+            /* Tamanho exato da impressão para preview fiel */
             width: 202mm;
-            height: 295mm;
+            height: 289mm;
             background: white;
             margin: 30px auto;
             display: grid;
@@ -224,6 +233,9 @@
             gap: 0;
             box-shadow: 0 0 20px rgba(0,0,0,0.15);
             border: 1px dashed #ccc;
+            /* Simula a margem branca da folha no preview */
+            outline: 4mm solid white; 
+            outline-offset: 1px;
         }
 
         .hidden { display: none !important; }
