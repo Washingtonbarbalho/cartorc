@@ -158,32 +158,31 @@
             display: inline-block;
         }
 
-        /* --- Configurações de Impressão (SIMETRIA APLICADA) --- */
+        /* --- Configurações de Impressão (ALTURA AJUSTADA PARA 292mm) --- */
         @media print {
             @page {
                 size: A4;
-                margin: 0; /* Controle total via CSS */
+                margin: 0;
             }
             
             body {
                 margin: 0 !important;
                 padding: 0 !important;
                 background: white;
-                /* Centraliza o bloco na folha verticalmente e horizontalmente */
                 display: flex !important;
                 justify-content: center;
                 align-items: center;
-                height: 100vh; /* Ocupa a altura total da folha */
+                height: 100vh;
             }
 
             .no-print { display: none !important; }
 
             .print-container {
-                /* Largura: 210mm (A4) - 8mm (margens laterais totais) = 202mm */
+                /* Largura mantida em 202mm para segurança lateral */
                 width: 202mm; 
                 
-                /* Altura: 297mm (A4) - 8mm (margens verticais totais) = 289mm */
-                height: 289mm; 
+                /* Altura ajustada conforme pedido */
+                height: 292mm; 
                 
                 display: grid !important;
                 grid-template-columns: repeat(3, 1fr);
@@ -191,8 +190,6 @@
                 gap: 0;
                 box-sizing: border-box;
                 overflow: hidden;
-                
-                /* Garante que não haja margins extras empurrando */
                 margin: 0; 
             }
             
@@ -224,7 +221,7 @@
         .preview-area {
             /* Tamanho exato da impressão para preview fiel */
             width: 202mm;
-            height: 289mm;
+            height: 292mm; /* Ajustado aqui também */
             background: white;
             margin: 30px auto;
             display: grid;
@@ -233,8 +230,7 @@
             gap: 0;
             box-shadow: 0 0 20px rgba(0,0,0,0.15);
             border: 1px dashed #ccc;
-            /* Simula a margem branca da folha no preview */
-            outline: 4mm solid white; 
+            outline: 2.5mm solid white; /* Outline ajustado visualmente */
             outline-offset: 1px;
         }
 
