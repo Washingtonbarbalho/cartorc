@@ -21,22 +21,28 @@
             min-height: 100vh;
         }
 
-        /* --- Estilos dos Cartões (Preservados) --- */
+        /* --- Estilos dos Cartões --- */
         .card {
-            border: 1.2px solid #000;
-            padding: 12px;
+            border: 1px solid #000;
+            /* Aumentei um pouco o padding interno para equilibrar com o cartão maior */
+            padding: 15px; 
             display: flex;
             flex-direction: column;
             height: 100%;
             box-sizing: border-box;
             justify-content: space-between;
             background: white;
+            /* Truque para evitar bordas duplas quando colados */
+            margin-right: -1px; 
+            margin-bottom: -1px;
+            position: relative;
+            z-index: 1;
         }
 
         .header-section {
-            border-bottom: 2.5px solid var(--zenir-red);
-            padding-bottom: 6px;
-            margin-bottom: 4px;
+            border-bottom: 3px solid var(--zenir-red); /* Engrossei levemente */
+            padding-bottom: 8px;
+            margin-bottom: 6px;
         }
 
         .logo-row {
@@ -49,15 +55,16 @@
             font-weight: 900;
             font-style: italic;
             color: var(--zenir-blue);
-            font-size: 1.7rem;
-            line-height: 1;
+            font-size: 2rem; /* Aumentei a fonte */
+            line-height: 0.9;
         }
 
         .logo-subtext {
-            font-size: 0.6rem;
+            font-size: 0.7rem; /* Aumentei a fonte */
             color: var(--zenir-red);
             font-weight: 700;
             text-transform: uppercase;
+            margin-top: 2px;
         }
 
         .seller-info {
@@ -68,7 +75,7 @@
         }
 
         .label-vendedor {
-            font-size: 0.55rem;
+            font-size: 0.6rem;
             font-weight: 900;
             color: #555;
             text-transform: uppercase;
@@ -76,16 +83,16 @@
         }
 
         .vendedor-nome {
-            font-size: 0.85rem;
+            font-size: 0.95rem; /* Aumentei a fonte */
             font-weight: 900;
             color: var(--zenir-blue);
             display: block;
             text-transform: uppercase;
-            margin-bottom: 1px;
+            margin-bottom: 2px;
         }
 
         .vendedor-tel {
-            font-size: 0.75rem;
+            font-size: 0.85rem; /* Aumentei a fonte */
             font-weight: 700;
             color: #000;
         }
@@ -95,29 +102,30 @@
             flex-direction: column;
             justify-content: space-between;
             flex-grow: 1;
-            padding: 4px 0;
+            padding: 5px 0;
         }
 
         .field-line {
             display: flex;
             align-items: flex-end;
             width: 100%;
+            margin-bottom: 2px; /* Espaçamento leve entre linhas */
         }
 
         .label {
-            font-size: 0.65rem;
+            font-size: 0.75rem; /* Aumentei a fonte */
             font-weight: 900;
-            margin-right: 5px;
+            margin-right: 6px;
             white-space: nowrap;
             color: #000;
             text-transform: uppercase;
         }
 
         .underline-full {
-            border-bottom: 1.2px solid #000;
+            border-bottom: 1.5px solid #000; /* Linha um pouco mais forte */
             flex-grow: 1;
-            height: 22px;
-            font-size: 0.85rem;
+            height: 24px;
+            font-size: 1rem;
             color: var(--zenir-blue);
             font-weight: bold;
         }
@@ -125,49 +133,64 @@
         .payment-options {
             display: flex;
             justify-content: space-between;
-            font-size: 0.52rem;
+            font-size: 0.6rem; /* Aumentei a fonte */
             font-weight: 800;
             border: 1px solid #000;
-            padding: 6px 3px;
-            margin: 6px 0;
+            padding: 8px 4px;
+            margin: 10px 0; /* Mais respiro */
             background-color: #fff;
         }
 
         .payment-item {
             display: flex;
             align-items: center;
-            gap: 3px;
+            gap: 4px;
         }
 
         .check-box {
-            width: 9px;
-            height: 9px;
+            width: 11px; /* Maior */
+            height: 11px;
             border: 1.2px solid #000;
             display: inline-block;
         }
 
         /* --- Configurações de Impressão --- */
         @media print {
+            @page {
+                size: A4;
+                margin: 0; /* Remove margem da impressora */
+            }
+            
+            body { 
+                background: white; 
+                margin: 0;
+                padding: 0;
+                overflow: hidden; /* Evita rolagem que gera pág extra */
+            }
+
             .no-print { display: none !important; }
-            body { background: white; }
+
             .print-container {
                 width: 210mm;
-                height: 297mm;
+                height: 296mm; /* 296mm para garantir que cabe em 1 pág (A4 é 297mm) */
                 margin: 0;
-                padding: 10mm;
+                padding: 0; /* Sem padding */
                 display: grid !important;
                 grid-template-columns: repeat(3, 1fr);
                 grid-template-rows: repeat(3, 1fr);
-                gap: 5mm;
+                gap: 0; /* Sem espaço entre cartões */
                 box-sizing: border-box;
+                overflow: hidden;
             }
-            @page {
-                size: A4;
-                margin: 0;
+            
+            /* Ajuste para garantir que a borda direita/inferior apareça */
+            .card {
+                border-right: 1px solid #000;
+                border-bottom: 1px solid #000;
             }
         }
 
-        /* --- Estilo da UI do Formulário --- */
+        /* --- Estilo da UI do Formulário (Tela) --- */
         .form-card {
             max-width: 500px;
             width: 95%;
@@ -188,18 +211,20 @@
             transform: translateY(-1px);
         }
 
+        /* Preview na tela ajustado para simular o resultado final */
         .preview-area {
             width: 210mm;
-            min-height: 297mm;
+            height: 297mm;
             background: white;
             margin: 30px auto;
-            padding: 10mm;
+            padding: 0; /* Sem padding no preview também */
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             grid-template-rows: repeat(3, 1fr);
-            gap: 5mm;
+            gap: 0; /* Sem gap */
             box-shadow: 0 0 20px rgba(0,0,0,0.15);
             box-sizing: border-box;
+            border: 1px solid #ccc; /* Apenas para visualizar o limite na tela */
         }
 
         .hidden { display: none !important; }
@@ -370,4 +395,3 @@
     </script>
 </body>
 </html>
-
