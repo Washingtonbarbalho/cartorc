@@ -24,25 +24,26 @@
         /* --- Estilos dos Cartões --- */
         .card {
             border: 1px solid #000;
-            /* Aumentei um pouco o padding interno para equilibrar com o cartão maior */
-            padding: 15px; 
+            /* Padding reduzido levemente para garantir que o OBS não seja cortado */
+            padding: 10px 14px; 
             display: flex;
             flex-direction: column;
             height: 100%;
             box-sizing: border-box;
             justify-content: space-between;
             background: white;
-            /* Truque para evitar bordas duplas quando colados */
+            /* Margens negativas para sobrepor as bordas e criar grade única */
             margin-right: -1px; 
             margin-bottom: -1px;
             position: relative;
             z-index: 1;
+            overflow: hidden; /* Garante que nada saia do cartão */
         }
 
         .header-section {
-            border-bottom: 3px solid var(--zenir-red); /* Engrossei levemente */
-            padding-bottom: 8px;
-            margin-bottom: 6px;
+            border-bottom: 3px solid var(--zenir-red);
+            padding-bottom: 4px; /* Mais compacto */
+            margin-bottom: 4px;
         }
 
         .logo-row {
@@ -55,12 +56,12 @@
             font-weight: 900;
             font-style: italic;
             color: var(--zenir-blue);
-            font-size: 2rem; /* Aumentei a fonte */
+            font-size: 1.8rem; /* Ajustado para proporção */
             line-height: 0.9;
         }
 
         .logo-subtext {
-            font-size: 0.7rem; /* Aumentei a fonte */
+            font-size: 0.65rem;
             color: var(--zenir-red);
             font-weight: 700;
             text-transform: uppercase;
@@ -75,7 +76,7 @@
         }
 
         .label-vendedor {
-            font-size: 0.6rem;
+            font-size: 0.55rem;
             font-weight: 900;
             color: #555;
             text-transform: uppercase;
@@ -83,16 +84,19 @@
         }
 
         .vendedor-nome {
-            font-size: 0.95rem; /* Aumentei a fonte */
+            font-size: 0.9rem;
             font-weight: 900;
             color: var(--zenir-blue);
             display: block;
             text-transform: uppercase;
-            margin-bottom: 2px;
+            margin-bottom: 1px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .vendedor-tel {
-            font-size: 0.85rem; /* Aumentei a fonte */
+            font-size: 0.8rem;
             font-weight: 700;
             color: #000;
         }
@@ -102,30 +106,30 @@
             flex-direction: column;
             justify-content: space-between;
             flex-grow: 1;
-            padding: 5px 0;
+            padding: 2px 0; /* Reduzi padding vertical */
         }
 
         .field-line {
             display: flex;
             align-items: flex-end;
             width: 100%;
-            margin-bottom: 2px; /* Espaçamento leve entre linhas */
+            margin-bottom: 1px; /* Mais compacto */
         }
 
         .label {
-            font-size: 0.75rem; /* Aumentei a fonte */
+            font-size: 0.7rem;
             font-weight: 900;
-            margin-right: 6px;
+            margin-right: 4px;
             white-space: nowrap;
             color: #000;
             text-transform: uppercase;
         }
 
         .underline-full {
-            border-bottom: 1.5px solid #000; /* Linha um pouco mais forte */
+            border-bottom: 1.5px solid #000;
             flex-grow: 1;
-            height: 24px;
-            font-size: 1rem;
+            height: 20px; /* Altura da linha ajustada */
+            font-size: 0.9rem;
             color: var(--zenir-blue);
             font-weight: bold;
         }
@@ -133,98 +137,101 @@
         .payment-options {
             display: flex;
             justify-content: space-between;
-            font-size: 0.6rem; /* Aumentei a fonte */
+            font-size: 0.55rem;
             font-weight: 800;
             border: 1px solid #000;
-            padding: 8px 4px;
-            margin: 10px 0; /* Mais respiro */
+            padding: 6px 4px;
+            margin: 8px 0; /* Reduzi margem para ganhar espaço vertical */
             background-color: #fff;
         }
 
         .payment-item {
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 3px;
         }
 
         .check-box {
-            width: 11px; /* Maior */
-            height: 11px;
+            width: 10px;
+            height: 10px;
             border: 1.2px solid #000;
             display: inline-block;
         }
 
-        /* --- Configurações de Impressão --- */
+        /* --- Configurações de Impressão (CRÍTICO) --- */
         @media print {
             @page {
                 size: A4;
-                margin: 0; /* Remove margem da impressora */
+                margin: 0; /* Remove margens padrão do navegador */
             }
             
-            body { 
-                background: white; 
+            html, body {
+                width: 100%;
+                height: 100%;
                 margin: 0;
                 padding: 0;
-                overflow: hidden; /* Evita rolagem que gera pág extra */
+                overflow: hidden; /* Bloqueia página extra */
+                background: white;
             }
 
             .no-print { display: none !important; }
 
             .print-container {
-                width: 210mm;
-                height: 296mm; /* 296mm para garantir que cabe em 1 pág (A4 é 297mm) */
-                margin: 0;
-                padding: 0; /* Sem padding */
+                /* Tamanhos fixos levemente menores que A4 para evitar corte de hardware */
+                width: 202mm; /* A4 é 210mm (sobra 4mm cada lado) */
+                height: 290mm; /* A4 é 297mm (sobra 3.5mm cada lado) */
+                
+                /* Centraliza na folha */
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                
                 display: grid !important;
                 grid-template-columns: repeat(3, 1fr);
                 grid-template-rows: repeat(3, 1fr);
                 gap: 0; /* Sem espaço entre cartões */
                 box-sizing: border-box;
-                overflow: hidden;
             }
             
-            /* Ajuste para garantir que a borda direita/inferior apareça */
+            /* Garante bordas visíveis na direita e embaixo */
             .card {
                 border-right: 1px solid #000;
                 border-bottom: 1px solid #000;
             }
+            
+            /* Remove bordas duplicadas nas extremidades esquerdas e topo */
+            .print-container .card:nth-child(3n) { border-right: 1px solid #000; } /* Garante borda na ultima coluna */
+            .print-container .card:nth-child(n+7) { border-bottom: 1px solid #000; } /* Garante borda na ultima linha */
         }
 
-        /* --- Estilo da UI do Formulário (Tela) --- */
+        /* --- UI Tela --- */
         .form-card {
             max-width: 500px;
             width: 95%;
             background: white;
             border-radius: 16px;
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1), 0 8px 10px -6px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
             overflow: hidden;
             border-top: 6px solid var(--zenir-blue);
         }
 
         .btn-zenir {
             background-color: var(--zenir-blue);
-            transition: all 0.2s;
         }
+        .btn-zenir:hover { background-color: #003a7a; }
 
-        .btn-zenir:hover {
-            background-color: #003a7a;
-            transform: translateY(-1px);
-        }
-
-        /* Preview na tela ajustado para simular o resultado final */
         .preview-area {
-            width: 210mm;
-            height: 297mm;
+            width: 202mm;
+            height: 290mm;
             background: white;
             margin: 30px auto;
-            padding: 0; /* Sem padding no preview também */
             display: grid;
             grid-template-columns: repeat(3, 1fr);
             grid-template-rows: repeat(3, 1fr);
-            gap: 0; /* Sem gap */
+            gap: 0;
             box-shadow: 0 0 20px rgba(0,0,0,0.15);
-            box-sizing: border-box;
-            border: 1px solid #ccc; /* Apenas para visualizar o limite na tela */
+            border: 1px dashed #ccc;
         }
 
         .hidden { display: none !important; }
@@ -232,12 +239,11 @@
 </head>
 <body class="flex flex-col items-center">
 
-    <!-- Seção Inicial: Formulário -->
     <div id="setupSection" class="no-print py-12 flex flex-col items-center w-full">
         <div class="mb-8 text-center">
             <h1 class="text-4xl font-black italic text-blue-900 leading-none">Zenir</h1>
             <p class="text-xs font-bold text-red-600 uppercase tracking-widest mt-1">Móveis e Eletros</p>
-            <h2 class="mt-6 text-xl font-bold text-gray-700">Gerador de Cartões de Orçamento</h2>
+            <h2 class="mt-6 text-xl font-bold text-gray-700">Gerador de Cartões</h2>
         </div>
 
         <div class="form-card p-8">
@@ -245,42 +251,32 @@
                 <div>
                     <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Nome do Vendedor</label>
                     <input type="text" id="vendedorInput" placeholder="EX: JOÃO DA SILVA" 
-                        class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all uppercase font-bold text-blue-900">
+                        class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none uppercase font-bold text-blue-900">
                 </div>
 
                 <div>
                     <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">WhatsApp / Telefone</label>
                     <input type="text" id="telInput" placeholder="(00) 00000-0000" maxlength="15"
-                        class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all font-bold">
+                        class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none font-bold">
                 </div>
 
                 <button onclick="generateCards()" class="w-full btn-zenir text-white font-black py-4 rounded-xl shadow-lg flex items-center justify-center gap-3">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-11a1 1 0 10-2 0v2H7a1 1 0 100 2h2v2a1 1 0 102 0v-2h2a1 1 0 100-2h-2V7z" clip-rule="evenodd" />
-                    </svg>
-                    GERAR CARTÕES PARA IMPRESSÃO
+                    GERAR IMPRESSÃO
                 </button>
             </div>
         </div>
     </div>
 
-    <!-- Seção de Resultado e Ações -->
-    <div id="actionSection" class="no-print hidden sticky top-0 w-full bg-white/80 backdrop-blur-md border-b p-4 flex justify-center gap-4 z-50">
-        <button onclick="window.print()" class="bg-green-600 hover:bg-green-700 text-white font-black px-8 py-3 rounded-lg flex items-center gap-2 shadow-md">
-            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" />
-            </svg>
+    <div id="actionSection" class="no-print hidden sticky top-0 w-full bg-white/90 backdrop-blur border-b p-4 flex justify-center gap-4 z-50">
+        <button onclick="window.print()" class="bg-green-600 hover:bg-green-700 text-white font-black px-8 py-3 rounded-lg shadow-md">
             IMPRIMIR AGORA
         </button>
-        <button onclick="backToEdit()" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold px-8 py-3 rounded-lg flex items-center gap-2">
-            EDITAR DADOS
+        <button onclick="backToEdit()" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold px-8 py-3 rounded-lg">
+            VOLTAR
         </button>
     </div>
 
-    <!-- Área da Folha A4 -->
-    <div id="printArea" class="preview-area hidden print-container">
-        <!-- Inserido via JS -->
-    </div>
+    <div id="printArea" class="preview-area hidden print-container"></div>
 
     <script>
         const setupSection = document.getElementById('setupSection');
@@ -289,7 +285,6 @@
         const vendedorInput = document.getElementById('vendedorInput');
         const telInput = document.getElementById('telInput');
 
-        // Máscara de Telefone
         telInput.addEventListener('input', (e) => {
             let v = e.target.value.replace(/\D/g, "");
             v = v.replace(/^(\d{2})(\d)/g, "($1) $2");
@@ -297,7 +292,6 @@
             e.target.value = v;
         });
 
-        // Forçar Maiúsculas no Nome
         vendedorInput.addEventListener('input', (e) => {
             e.target.value = e.target.value.toUpperCase();
         });
@@ -306,10 +300,7 @@
             const nome = vendedorInput.value.trim();
             const tel = telInput.value.trim();
 
-            if (!nome) {
-                alert("Por favor, informe o nome do vendedor.");
-                return;
-            }
+            if (!nome) { alert("Informe o nome."); return; }
 
             let cardsHtml = '';
             for (let i = 0; i < 9; i++) {
@@ -334,7 +325,6 @@
                             <span class="label">PV:</span>
                             <div class="underline-full"></div>
                         </div>
-
                         <div class="field-line">
                             <span class="label">CÓDIGO:</span>
                             <div class="underline-full"></div>
@@ -356,34 +346,26 @@
                             <span class="label">TOTAL: R$</span>
                             <div class="underline-full"></div>
                         </div>
-
                         <div class="field-line">
                             <span class="label">PARCELA:</span>
                             <div class="underline-full"></div>
                         </div>
-
                         <div class="field-line">
                             <span class="label">ENTRADA:</span>
                             <div class="underline-full"></div>
                         </div>
-
                         <div class="field-line">
                             <span class="label">OBS:</span>
                             <div class="underline-full"></div>
                         </div>
                     </div>
-                </div>
-                `;
+                </div>`;
             }
 
             printArea.innerHTML = cardsHtml;
-            
-            // Alternar Visibilidade
             setupSection.classList.add('hidden');
             actionSection.classList.remove('hidden');
             printArea.classList.remove('hidden');
-            
-            // Scroll para o topo para ver a folha
             window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
@@ -395,3 +377,4 @@
     </script>
 </body>
 </html>
+
