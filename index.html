@@ -24,7 +24,6 @@
         /* --- Estilos dos Cartões --- */
         .card {
             border: 1px solid #000;
-            /* Padding reduzido levemente para garantir que o OBS não seja cortado */
             padding: 10px 14px; 
             display: flex;
             flex-direction: column;
@@ -32,17 +31,17 @@
             box-sizing: border-box;
             justify-content: space-between;
             background: white;
-            /* Margens negativas para sobrepor as bordas e criar grade única */
+            /* Margens negativas para colar as bordas */
             margin-right: -1px; 
             margin-bottom: -1px;
             position: relative;
             z-index: 1;
-            overflow: hidden; /* Garante que nada saia do cartão */
+            overflow: hidden;
         }
 
         .header-section {
             border-bottom: 3px solid var(--zenir-red);
-            padding-bottom: 4px; /* Mais compacto */
+            padding-bottom: 4px;
             margin-bottom: 4px;
         }
 
@@ -56,7 +55,7 @@
             font-weight: 900;
             font-style: italic;
             color: var(--zenir-blue);
-            font-size: 1.8rem; /* Ajustado para proporção */
+            font-size: 1.8rem;
             line-height: 0.9;
         }
 
@@ -106,14 +105,14 @@
             flex-direction: column;
             justify-content: space-between;
             flex-grow: 1;
-            padding: 2px 0; /* Reduzi padding vertical */
+            padding: 2px 0;
         }
 
         .field-line {
             display: flex;
             align-items: flex-end;
             width: 100%;
-            margin-bottom: 1px; /* Mais compacto */
+            margin-bottom: 1px;
         }
 
         .label {
@@ -128,7 +127,7 @@
         .underline-full {
             border-bottom: 1.5px solid #000;
             flex-grow: 1;
-            height: 20px; /* Altura da linha ajustada */
+            height: 20px;
             font-size: 0.9rem;
             color: var(--zenir-blue);
             font-weight: bold;
@@ -141,7 +140,7 @@
             font-weight: 800;
             border: 1px solid #000;
             padding: 6px 4px;
-            margin: 8px 0; /* Reduzi margem para ganhar espaço vertical */
+            margin: 8px 0;
             background-color: #fff;
         }
 
@@ -158,51 +157,50 @@
             display: inline-block;
         }
 
-        /* --- Configurações de Impressão (CRÍTICO) --- */
+        /* --- Configurações de Impressão (CORRIGIDO) --- */
         @media print {
             @page {
                 size: A4;
-                margin: 0; /* Remove margens padrão do navegador */
+                margin: 0; /* Remove margens da impressora */
             }
             
-            html, body {
-                width: 100%;
-                height: 100%;
-                margin: 0;
-                padding: 0;
-                overflow: hidden; /* Bloqueia página extra */
+            body {
+                margin: 0 !important;
+                padding: 0 !important;
                 background: white;
+                display: block !important; /* Desativa o flex do tailwind que centraliza */
             }
 
             .no-print { display: none !important; }
 
             .print-container {
-                /* Tamanhos fixos levemente menores que A4 para evitar corte de hardware */
-                width: 202mm; /* A4 é 210mm (sobra 4mm cada lado) */
-                height: 290mm; /* A4 é 297mm (sobra 3.5mm cada lado) */
+                /* Largura segura para não cortar laterais (A4 = 210mm) */
+                width: 202mm; 
+                /* Altura máxima segura (A4 = 297mm) */
+                height: 295mm; 
                 
-                /* Centraliza na folha */
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                transform: translate(-50%, -50%);
+                /* POSICIONAMENTO ESTRITO NO TOPO */
+                margin: 0 auto !important; /* Centraliza horizontal, 0 vertical */
+                position: static !important;
+                transform: none !important;
                 
                 display: grid !important;
                 grid-template-columns: repeat(3, 1fr);
                 grid-template-rows: repeat(3, 1fr);
-                gap: 0; /* Sem espaço entre cartões */
+                gap: 0;
                 box-sizing: border-box;
+                overflow: hidden; /* Garante que não gere pag 2 */
             }
             
-            /* Garante bordas visíveis na direita e embaixo */
+            /* Garante bordas nas extremidades */
             .card {
                 border-right: 1px solid #000;
                 border-bottom: 1px solid #000;
             }
             
-            /* Remove bordas duplicadas nas extremidades esquerdas e topo */
-            .print-container .card:nth-child(3n) { border-right: 1px solid #000; } /* Garante borda na ultima coluna */
-            .print-container .card:nth-child(n+7) { border-bottom: 1px solid #000; } /* Garante borda na ultima linha */
+            /* Ajuste fino de bordas para a grade */
+            .print-container .card:nth-child(3n) { border-right: 1px solid #000; } 
+            .print-container .card:nth-child(n+7) { border-bottom: 1px solid #000; } 
         }
 
         /* --- UI Tela --- */
@@ -223,7 +221,7 @@
 
         .preview-area {
             width: 202mm;
-            height: 290mm;
+            height: 295mm;
             background: white;
             margin: 30px auto;
             display: grid;
