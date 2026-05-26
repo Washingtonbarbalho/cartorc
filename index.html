@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Zenir - Gerador de Orçamentos</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700;900&display=swap');
+
+        :root {
+            --zenir-blue: #004a99;
+            --zenir-red: #e30613;
+        }
+
+        body {
+            background-color: #f0f2f5;
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        /* --- Estilos dos Cartões --- */
+        .card {
+            border: 1px solid #000;
+            padding: 10px 14px; 
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+            box-sizing: border-box;
+            justify-content: space-between;
+            background: white;
+            margin-right: -1px; 
+            margin-bottom: -1px;
+            position: relative;
+            z-index: 1;
+            overflow: hidden;
+        }
+
+        .header-section {
+            border-bottom: 3px solid var(--zenir-red);
+            padding-bottom: 4px;
+            margin-bottom: 4px;
+        }
+
+        .logo-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Área do Vendedor (Esquerda) */
+        .seller-info {
+            text-align: left;
+            color: #000;
+            max-width: 75%;
+            line-height: 1;
+        }
+
+        .label-vendedor {
+            font-size: 0.55rem;
+            font-weight: 900;
+            color: #555;
+            text-transform: uppercase;
+            display: block;
+            margin-bottom: 1px;
+        }
+
+        .vendedor-nome {
+            font-size: 1.3rem;
+            font-weight: 900;
+            color: var(--zenir-blue);
+            display: block;
+            text-transform: uppercase;
+            margin-bottom: 1px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            line-height: 0.9;
+        }
+
+        .vendedor-tel {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: #000;
+        }
+
+        /* Área do Logo (Direita) */
+        .logo-div {
+            text-align: right;
+        }
+
+        .logo-brand {
+            font-weight: 900;
+            font-style: italic;
+            color: var(--zenir-blue);
+            font-size: 1.9rem;
+            line-height: 0.9;
+            letter-spacing: -1px;
+        }
+
+        /* Campos */
+        .field-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            flex-grow: 1;
+            padding: 2px 0;
+        }
+
+        .field-line {
+            display: flex;
+            align-items: flex-end;
+            width: 100%;
+            margin-bottom: 1px;
+        }
+
+        .label {
+            font-size: 0.7rem;
+            font-weight: 900;
+            margin-right: 4px;
+            white-space: nowrap;
+            color: #000;
+            text-transform: uppercase;
+        }
+
+        .underline-full {
+            border-bottom: 1.5px solid #000;
+            flex-grow: 1;
+            height: 20px;
+            font-size: 0.9rem;
+            color: var(--zenir-blue);
+            font-weight: bold;
+        }
+
+        .payment-options {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.55rem;
+            font-weight: 800;
+            border: 1px solid #000;
+            padding: 6px 4px;
+            margin: 8px 0;
+            background-color: #fff;
+        }
+
+        .payment-item {
+            display: flex;
+            align-items: center;
+            gap: 3px;
+        }
+
+        .check-box {
+            width: 10px;
+            height: 10px;
+            border: 1.2px solid #000;
+            display: inline-block;
+        }
+
+        /* --- Configurações de Impressão (CORREÇÃO DEFINITIVA) --- */
+        @media print {
+            @page {
+                size: A4;
+                margin: 0; /* Zera margens da impressora */
+            }
+            
+            body {
+                margin: 0 !important;
+                padding: 0 !important;
+                background: white;
+                display: block !important; /* REMOVIDO: flex/center que causava o problema */
+            }
+
+            .no-print { display: none !important; }
+
+            .print-container {
+                /* Dimensões Fixas */
+                width: 202mm; 
+                height: 292mm; 
+                
+                /* POSICIONAMENTO MANUAL ESTRITO */
+                /* 2.5mm Topo | Auto (Centro) Direita | 0 Baixo | Auto (Centro) Esquerda */
+                margin: 2.5mm auto 0 auto !important; 
+                
+                display: grid !important;
+                grid-template-columns: repeat(3, 1fr);
+                grid-template-rows: repeat(3, 1fr);
+                gap: 0;
+                box-sizing: border-box;
+                overflow: hidden;
+            }
+            
+            /* Bordas da Grade */
+            .card {
+                border-right: 1px solid #000;
+                border-bottom: 1px solid #000;
+            }
+            
+            /* Fecha a grade na direita e embaixo */
+            .print-container .card:nth-child(3n) { border-right: 1px solid #000; } 
+            .print-container .card:nth-child(n+7) { border-bottom: 1px solid #000; } 
+        }
+
+        /* --- UI Tela --- */
+        .form-card {
+            max-width: 500px;
+            width: 95%;
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            border-top: 6px solid var(--zenir-blue);
+        }
+
+        .btn-zenir {
+            background-color: var(--zenir-blue);
+        }
+        .btn-zenir:hover { background-color: #003a7a; }
+
+        .preview-area {
+            width: 202mm;
+            height: 292mm;
+            background: white;
+            margin: 30px auto;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            gap: 0;
+            box-shadow: 0 0 20px rgba(0,0,0,0.15);
+            border: 1px dashed #ccc;
+            outline: 2.5mm solid white; /* Simula a margem de impressão */
+            outline-offset: 1px;
+        }
+
+        .hidden { display: none !important; }
+    </style>
+</head>
+<body class="flex flex-col items-center">
+
+    <div id="setupSection" class="no-print py-12 flex flex-col items-center w-full">
+        <div class="mb-8 text-center">
+            <h1 class="text-4xl font-black italic text-blue-900 leading-none">Zenir</h1>
+            <p class="text-xs font-bold text-red-600 uppercase tracking-widest mt-1">Móveis e Eletros</p>
+            <h2 class="mt-6 text-xl font-bold text-gray-700">Gerador de Cartões</h2>
+        </div>
+
+        <div class="form-card p-8">
+            <div class="space-y-6">
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">Nome do Vendedor</label>
+                    <input type="text" id="vendedorInput" placeholder="EX: JOÃO DA SILVA" 
+                        class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none uppercase font-bold text-blue-900">
+                </div>
+
+                <div>
+                    <label class="block text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">WhatsApp / Telefone</label>
+                    <input type="text" id="telInput" placeholder="(00) 00000-0000" maxlength="15"
+                        class="w-full px-4 py-3 bg-gray-50 border border-gray-200 rounded-xl focus:ring-2 focus:ring-blue-500 outline-none font-bold">
+                </div>
+
+                <button onclick="generateCards()" class="w-full btn-zenir text-white font-black py-4 rounded-xl shadow-lg flex items-center justify-center gap-3">
+                    GERAR IMPRESSÃO
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div id="actionSection" class="no-print hidden sticky top-0 w-full bg-white/90 backdrop-blur border-b p-4 flex justify-center gap-4 z-50">
+        <button onclick="window.print()" class="bg-green-600 hover:bg-green-700 text-white font-black px-8 py-3 rounded-lg shadow-md">
+            IMPRIMIR AGORA
+        </button>
+        <button onclick="backToEdit()" class="bg-gray-200 hover:bg-gray-300 text-gray-700 font-bold px-8 py-3 rounded-lg">
+            VOLTAR
+        </button>
+    </div>
+
+    <div id="printArea" class="preview-area hidden print-container"></div>
+
+    <script>
+        const setupSection = document.getElementById('setupSection');
+        const actionSection = document.getElementById('actionSection');
+        const printArea = document.getElementById('printArea');
+        const vendedorInput = document.getElementById('vendedorInput');
+        const telInput = document.getElementById('telInput');
+
+        telInput.addEventListener('input', (e) => {
+            let v = e.target.value.replace(/\D/g, "");
+            v = v.replace(/^(\d{2})(\d)/g, "($1) $2");
+            v = v.replace(/(\d)(\d{4})$/, "$1-$2");
+            e.target.value = v;
+        });
+
+        vendedorInput.addEventListener('input', (e) => {
+            e.target.value = e.target.value.toUpperCase();
+        });
+
+        function generateCards() {
+            const nome = vendedorInput.value.trim();
+            const tel = telInput.value.trim();
+
+            if (!nome) { alert("Informe o nome."); return; }
+
+            let cardsHtml = '';
+            for (let i = 0; i < 9; i++) {
+                cardsHtml += `
+                <div class="card">
+                    <div class="header-section">
+                        <div class="logo-row">
+                            <!-- Lado Esquerdo: Vendedor (Destaque) -->
+                            <div class="seller-info">
+                                <span class="label-vendedor">Vendedor</span>
+                                <span class="vendedor-nome">${nome}</span>
+                                <span class="vendedor-tel">${tel || '(____) _____-_____'}</span>
+                            </div>
+                            
+                            <!-- Lado Direito: Logo Zenir Simplificado -->
+                            <div class="logo-div">
+                                <div class="logo-brand">Zenir</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="field-container">
+                        <div class="field-line">
+                            <span class="label">PV:</span>
+                            <div class="underline-full"></div>
+                        </div>
+                        <div class="field-line">
+                            <span class="label">CÓDIGO:</span>
+                            <div class="underline-full"></div>
+                        </div>
+                        <div class="field-line">
+                            <div class="underline-full"></div>
+                        </div>
+
+                        <div class="payment-options">
+                            <div class="payment-item">AV <div class="check-box"></div></div>
+                            <div class="payment-item">PIX <div class="check-box"></div></div>
+                            <div class="payment-item">CRED <div class="check-box"></div></div>
+                            <div class="payment-item">DEB <div class="check-box"></div></div>
+                            <div class="payment-item">CARNÊ <div class="check-box"></div></div>
+                            <div class="payment-item">FINANC. <div class="check-box"></div></div>
+                        </div>
+
+                        <div class="field-line">
+                            <span class="label">TOTAL: R$</span>
+                            <div class="underline-full"></div>
+                        </div>
+                        <div class="field-line">
+                            <span class="label">PARCELA:</span>
+                            <div class="underline-full"></div>
+                        </div>
+                        <div class="field-line">
+                            <span class="label">ENTRADA:</span>
+                            <div class="underline-full"></div>
+                        </div>
+                        <div class="field-line">
+                            <span class="label">OBS:</span>
+                            <div class="underline-full"></div>
+                        </div>
+                    </div>
+                </div>`;
+            }
+
+            printArea.innerHTML = cardsHtml;
+            setupSection.classList.add('hidden');
+            actionSection.classList.remove('hidden');
+            printArea.classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function backToEdit() {
+            setupSection.classList.remove('hidden');
+            actionSection.classList.add('hidden');
+            printArea.classList.add('hidden');
+        }
+    </script>
+</body>
+</html>
+
